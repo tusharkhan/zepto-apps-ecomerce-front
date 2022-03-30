@@ -28,11 +28,6 @@
 
 <body>
 
-@if( \Illuminate\Support\Facades\Session::has('errors') )
-@php
-    $errors = \Illuminate\Support\Facades\Session::get('errors');
-@endphp
-@endif
 <!-- ============================================================== -->
 <!-- Main wrapper - style you can find in pages.scss -->
 <!-- ============================================================== -->
@@ -63,7 +58,6 @@
                         @if( isset($errors) )
                             <span class="error text-danger">{{ $errors[1] ?? null }}</span>
                         @endif
-
                     </div>
                     <div class="form-group">
                         <button type="submit" class="btn btn-primary">Login</button>

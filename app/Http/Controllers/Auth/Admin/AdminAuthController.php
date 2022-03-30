@@ -50,7 +50,7 @@ class AdminAuthController extends Controller
         ]);
 
         if ($validator->fails()) {
-            $errors = Session::flash('errors', $validator->errors()->all());
+            Session::flash('errors', $validator->errors()->all());
             return redirect()->back();
         }
 
