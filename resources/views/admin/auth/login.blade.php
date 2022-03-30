@@ -1,0 +1,80 @@
+<?php
+/**
+ * created by: tushar Khan
+ * email : tushar.khan0122@gmail.com
+ * date : 3/31/2022
+ */
+
+?>
+
+    <!DOCTYPE html>
+<html dir="ltr" lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Ample Admin Lite Template by WrapPixel</title>
+
+    <!-- Favicon icon -->
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('admin/plugins/images/favicon.png') }}">
+    <!-- Custom CSS -->
+    <!-- Custom CSS -->
+    <link href="{{ asset('admin/css/style.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('admin/bootstrap/dist/css/bootstrap.css') }}" rel="stylesheet">
+</head>
+
+<body>
+
+@if( \Illuminate\Support\Facades\Session::has('errors') )
+@php
+    $errors = \Illuminate\Support\Facades\Session::get('errors');
+@endphp
+@endif
+<!-- ============================================================== -->
+<!-- Main wrapper - style you can find in pages.scss -->
+<!-- ============================================================== -->
+<div id="main-wrapper" data-layout="vertical" data-navbarbg="skin5" data-sidebartype="full"
+     data-sidebar-position="absolute" data-header-position="absolute" data-boxed-layout="full">
+
+    <div class="col-md-6 offset-3" style="margin-top: 100px">
+        <div class="analytics-info bg-info p-25 mb-5">
+            <h3 class="text-center  box-title">Admin Login</h3>
+
+            <div class="mt-2 login-form">
+                <form action="{{ route('admin.login') }}" method="post">
+                    @csrf
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" class="form-control" id="email" name="email" placeholder="Email">
+
+                        @if( isset($errors) )
+                            <span class="error text-danger">{{ $errors[0] ?? null }}</span>
+                        @endif
+
+
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" class="form-control" id="password" name="password" placeholder="Password">
+
+                        @if( isset($errors) )
+                            <span class="error text-danger">{{ $errors[1] ?? null }}</span>
+                        @endif
+
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary">Login</button>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+</body>
+
+</html>
