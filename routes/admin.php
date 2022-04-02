@@ -1,7 +1,9 @@
 <?php
 
+use App\Http\Controllers\Admin\AdminController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Auth\Admin\LoginController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,6 +16,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('dashboard', function (Request $request) {
-    return 'dashboard';
+Route::post('login', [LoginController::class, 'login'])->name('admin.login.post');
+Route::get('login', [LoginController::class, 'showLoginForm'])->name('admin.login');
+
+Route::middleware('admin')->group(function () {
+    Route::get('dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
 });

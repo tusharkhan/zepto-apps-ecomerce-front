@@ -27,7 +27,14 @@
 </head>
 
 <body>
+@php
+    $errors = [];
 
+    if( \Illuminate\Support\Facades\Session::has('errors') ){
+        $errors = \Illuminate\Support\Facades\Session::get('errors');
+        \Illuminate\Support\Facades\Session::forget('errors');
+    }
+@endphp
 <!-- ============================================================== -->
 <!-- Main wrapper - style you can find in pages.scss -->
 <!-- ============================================================== -->
@@ -39,13 +46,13 @@
             <h3 class="text-center  box-title">Admin Login</h3>
 
             <div class="mt-2 login-form">
-                <form action="{{ route('admin.login') }}" method="post">
+                <form action="{{ route('admin.login.post') }}" method="post">
                     @csrf
                     <div class="form-group">
                         <label for="email">Email</label>
                         <input type="email" class="form-control" id="email" name="email" placeholder="Email">
 
-                        @if( isset($errors) )
+                        @if( isset($errors) && count($errors) > 0)
                             <span class="error text-danger">{{ $errors[0] ?? null }}</span>
                         @endif
 
@@ -55,7 +62,7 @@
                         <label for="password">Password</label>
                         <input type="password" class="form-control" id="password" name="password" placeholder="Password">
 
-                        @if( isset($errors) )
+                        @if( isset($errors) && count($errors) > 0 )
                             <span class="error text-danger">{{ $errors[1] ?? null }}</span>
                         @endif
                     </div>

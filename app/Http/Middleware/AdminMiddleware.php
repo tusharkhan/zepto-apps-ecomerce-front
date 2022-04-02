@@ -16,7 +16,8 @@ class AdminMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-        if (! $request->user()) {
+        if (!checkLogin('admin')) {
+            // user value cannot be found in session
             return redirect('/admin/login');
         }
 
