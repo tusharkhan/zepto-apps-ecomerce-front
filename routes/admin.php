@@ -18,6 +18,7 @@ use App\Http\Controllers\Auth\Admin\LoginController;
 
 Route::post('login', [LoginController::class, 'login'])->name('admin.login.post');
 Route::get('login', [LoginController::class, 'showLoginForm'])->name('admin.login');
+Route::get('logout', [LoginController::class, 'logout'])->name('admin.logout');
 
 Route::middleware('admin')->group(function () {
     Route::get('dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');

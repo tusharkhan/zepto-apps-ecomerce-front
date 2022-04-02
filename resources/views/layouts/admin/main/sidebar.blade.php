@@ -59,7 +59,7 @@ if ( checkLogin('admin') ){
                 <!-- User profile and search -->
                 <!-- ============================================================== -->
                 <li>
-                    <a class="profile-pic" href="#">
+                    <a class="profile-pic" href="{{ route('admin.logout') }}" >
                         {{ $user->name ?? "" }}</a>
                 </li>
                 <!-- ============================================================== -->
