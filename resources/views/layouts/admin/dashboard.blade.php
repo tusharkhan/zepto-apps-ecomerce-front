@@ -4,7 +4,7 @@
  * email : tushar.khan0122@gmail.com
  * date : 4/3/2022
  */
-
+?>
 @extends('layouts.admin.main.adminLayout')
 
 @section('adminContent')
@@ -370,8 +370,7 @@
         <!-- ============================================================== -->
         <!-- footer -->
         <!-- ============================================================== -->
-        <footer class="footer text-center"> 2021 © Ample Admin brought to you by <a
-                href="https://www.wrappixel.com/">wrappixel.com</a>
+        <footer class="footer text-center"> {{ date('Y') }} © Admin
         </footer>
         <!-- ============================================================== -->
         <!-- End footer -->

@@ -7,7 +7,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
-use Symfony\Component\HttpFoundation\Response;
+use Toastr;
 
 class LoginController extends Controller
 {
@@ -32,23 +32,43 @@ class LoginController extends Controller
         $response = AdminAuthAPI::login($data);
 
         $code = $response->getStatusCode();
+        $responseData = json_decode($response->getBody()->getContents());
 
         if ( $code == 200 ){
-            $responseData = json_decode($response->getBody()->getContents());
-
             Session::put('admin.login', true);
             Session::put('admin.token', $responseData->data->access_token);
             Session::put('admin.user', $responseData->data->user);
+
+            Toastr::success('Login Successfully');
+
+            return redirect()->route('admin.dashboard');
         } else {
-            Session::put('login.api.errors', array('Invalid email or password'));
+            Session::put('login.api.errors', $responseData->errors);
+
+            Toastr::error($responseData->errors->error);
+
+            return redirect()->back();
         }
 
-        return $code;
     }
 
 
     public function showLoginForm()
     {
+        if ( checkLogin('admin') )
+            return redirect('/admin/dashboard');
         return view('layouts.admin.auth.login');
+    }
+
+
+    public function logout()
+    {
+        Session::forget('admin.login');
+        Session::forget('admin.token');
+        Session::forget('admin.user');
+
+        Toastr::info('Logout Successfully');
+
+        return redirect()->route('admin.login');
     }
 }

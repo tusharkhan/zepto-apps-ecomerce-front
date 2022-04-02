@@ -5,6 +5,12 @@
  * date : 4/3/2022
  */
 
+$user = null;
+
+if ( checkLogin('admin') ){
+    $user = \Illuminate\Support\Facades\Session::get('admin.user');
+}
+
 ?>
 
 <header class="topbar" data-navbarbg="skin5">
@@ -48,21 +54,13 @@
                 <!-- ============================================================== -->
                 <!-- Search -->
                 <!-- ============================================================== -->
-                <li class=" in">
-                    <form role="search" class="app-search d-none d-md-block me-3">
-                        <input type="text" placeholder="Search..." class="form-control mt-0">
-                        <a href="" class="active">
-                            <i class="fa fa-search"></i>
-                        </a>
-                    </form>
-                </li>
+
                 <!-- ============================================================== -->
                 <!-- User profile and search -->
                 <!-- ============================================================== -->
                 <li>
                     <a class="profile-pic" href="#">
-                        <img src="plugins/images/users/varun.jpg" alt="user-img" width="36"
-                             class="img-circle"><span class="text-white font-medium">Steave</span></a>
+                        {{ $user->name ?? "" }}</a>
                 </li>
                 <!-- ============================================================== -->
                 <!-- User profile and search -->
@@ -90,49 +88,10 @@
                     <a class="sidebar-link waves-effect waves-dark sidebar-link" href="profile.html"
                        aria-expanded="false">
                         <i class="fa fa-user" aria-hidden="true"></i>
-                        <span class="hide-menu">Profile</span>
+                        <span class="hide-menu">Product</span>
                     </a>
                 </li>
-                <li class="sidebar-item">
-                    <a class="sidebar-link waves-effect waves-dark sidebar-link" href="basic-table.html"
-                       aria-expanded="false">
-                        <i class="fa fa-table" aria-hidden="true"></i>
-                        <span class="hide-menu">Basic Table</span>
-                    </a>
-                </li>
-                <li class="sidebar-item">
-                    <a class="sidebar-link waves-effect waves-dark sidebar-link" href="fontawesome.html"
-                       aria-expanded="false">
-                        <i class="fa fa-font" aria-hidden="true"></i>
-                        <span class="hide-menu">Icon</span>
-                    </a>
-                </li>
-                <li class="sidebar-item">
-                    <a class="sidebar-link waves-effect waves-dark sidebar-link" href="map-google.html"
-                       aria-expanded="false">
-                        <i class="fa fa-globe" aria-hidden="true"></i>
-                        <span class="hide-menu">Google Map</span>
-                    </a>
-                </li>
-                <li class="sidebar-item">
-                    <a class="sidebar-link waves-effect waves-dark sidebar-link" href="blank.html"
-                       aria-expanded="false">
-                        <i class="fa fa-columns" aria-hidden="true"></i>
-                        <span class="hide-menu">Blank Page</span>
-                    </a>
-                </li>
-                <li class="sidebar-item">
-                    <a class="sidebar-link waves-effect waves-dark sidebar-link" href="404.html"
-                       aria-expanded="false">
-                        <i class="fa fa-info-circle" aria-hidden="true"></i>
-                        <span class="hide-menu">Error 404</span>
-                    </a>
-                </li>
-                <li class="text-center p-20 upgrade-btn">
-                    <a href="https://www.wrappixel.com/templates/ampleadmin/"
-                       class="btn d-grid btn-danger text-white" target="_blank">
-                        Upgrade to Pro</a>
-                </li>
+
             </ul>
 
         </nav>
