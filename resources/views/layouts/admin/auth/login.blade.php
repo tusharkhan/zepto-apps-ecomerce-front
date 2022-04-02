@@ -24,6 +24,7 @@
     <!-- Custom CSS -->
     <link href="{{ asset('admin/css/style.min.css') }}" rel="stylesheet">
     <link href="{{ asset('admin/bootstrap/dist/css/bootstrap.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="http://cdn.bootcss.com/toastr.js/latest/css/toastr.min.css">
 </head>
 
 <body>
@@ -76,6 +77,14 @@
     </div>
 </div>
 
+<script src="http://cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<script src="http://cdn.bootcss.com/toastr.js/latest/js/toastr.min.js"></script>
+<!-- Bootstrap tether Core JavaScript -->
+<script src="{{ asset('admin/bootstrap/dist/js/bootstrap.bundle.min.js') }}"></script>
+<!--Custom JavaScript -->
+<script src="{{ asset('admin/js/custom.js') }}"></script>
+
+{!! Toastr::message() !!}
 </body>
 
 </html>
