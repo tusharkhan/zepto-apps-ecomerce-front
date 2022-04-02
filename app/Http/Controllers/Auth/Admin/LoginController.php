@@ -32,15 +32,14 @@ class LoginController extends Controller
         $response = AdminAuthAPI::login($data);
 
         $code = $response->getStatusCode();
+        $responseData = json_decode($response->getBody()->getContents());
 
         if ( $code == 200 ){
-            $responseData = json_decode($response->getBody()->getContents());
-
             Session::put('admin.login', true);
             Session::put('admin.token', $responseData->data->access_token);
             Session::put('admin.user', $responseData->data->user);
         } else {
-            Session::put('login.api.errors', array('Invalid email or password'));
+            Session::put('login.api.errors', $responseData->data->errors);
         }
 
         return $code;
