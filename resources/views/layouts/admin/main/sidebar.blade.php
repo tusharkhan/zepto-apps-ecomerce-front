@@ -19,18 +19,14 @@ if ( checkLogin('admin') ){
             <!-- ============================================================== -->
             <!-- Logo -->
             <!-- ============================================================== -->
-            <a class="navbar-brand" href="dashboard.html">
+            <a class="navbar-brand" href="{{ route('admin.dashboard') }}">
                 <!-- Logo icon -->
                 <b class="logo-icon">
                     <!-- Dark Logo icon -->
-                    <img src="plugins/images/logo-icon.png" alt="homepage" />
+                    <img src="{{ asset('admin/plugins/images/logo-icon.png') }}" alt="homepage" />
                 </b>
                 <!--End Logo icon -->
-                <!-- Logo text -->
-                <span class="logo-text">
-                            <!-- dark Logo text -->
-                            <img src="plugins/images/logo-text.png" alt="homepage" />
-                        </span>
+                
             </a>
             <!-- ============================================================== -->
             <!-- End Logo -->
@@ -58,9 +54,13 @@ if ( checkLogin('admin') ){
                 <!-- ============================================================== -->
                 <!-- User profile and search -->
                 <!-- ============================================================== -->
-                <li>
-                    <a class="profile-pic" href="#">
-                        {{ $user->name ?? "" }}</a>
+                <li class="dropdown">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        {{ $user->name ?? ""}}
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <a class="dropdown-item" href="{{ route('admin.logout') }}">Logout</a>
+                    </div>
                 </li>
                 <!-- ============================================================== -->
                 <!-- User profile and search -->
@@ -78,17 +78,10 @@ if ( checkLogin('admin') ){
             <ul id="sidebarnav">
                 <!-- User Profile-->
                 <li class="sidebar-item pt-2">
-                    <a class="sidebar-link waves-effect waves-dark sidebar-link" href="dashboard.html"
+                    <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{{ route('admin.dashboard') }}"
                        aria-expanded="false">
                         <i class="far fa-clock" aria-hidden="true"></i>
                         <span class="hide-menu">Dashboard</span>
-                    </a>
-                </li>
-                <li class="sidebar-item">
-                    <a class="sidebar-link waves-effect waves-dark sidebar-link" href="profile.html"
-                       aria-expanded="false">
-                        <i class="fa fa-user" aria-hidden="true"></i>
-                        <span class="hide-menu">Product</span>
                     </a>
                 </li>
 
