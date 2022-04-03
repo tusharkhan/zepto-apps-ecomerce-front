@@ -38,6 +38,7 @@ class LoginController extends Controller
             Session::put('admin.login', true);
             Session::put('admin.token', $responseData->data->access_token);
             Session::put('admin.user', $responseData->data->user);
+            AdminAuthAPI::setUser($responseData->data->user);
 
             Toastr::success('Login Successfully');
 
