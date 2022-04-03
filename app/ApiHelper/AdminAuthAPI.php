@@ -28,7 +28,10 @@ class AdminAuthAPI implements AuthInterface
 
     public static function getUser()
     {
-        // TODO: Implement getUser() method.
+        if (Session::has('admin.login') && Session::get('admin.login') == true) {
+            return Session::get('admin.user');
+        }
+        return null;
     }
 
     /**
