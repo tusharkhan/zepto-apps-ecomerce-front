@@ -9,6 +9,7 @@
 namespace App\ApiHelper;
 
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Session;
 
 class AdminAuthAPI implements AuthInterface
 {
@@ -16,6 +17,7 @@ class AdminAuthAPI implements AuthInterface
     public static $apiEndpoint;
     public static $loginEndpoint;
     public static $logoutEndpoint;
+
 
     public static function init()
     {
@@ -41,5 +43,15 @@ class AdminAuthAPI implements AuthInterface
     public static function logout()
     {
         // TODO: Implement logout() method.
+    }
+
+
+    public static function getAllProducts()
+    {
+        $headers = [
+            'Authorization' => 'Bearer ' . Session::get('admin.token')
+        ];
+
+        return Http::withHeaders($headers)->get(self::$apiEndpoint . 'products');
     }
 }

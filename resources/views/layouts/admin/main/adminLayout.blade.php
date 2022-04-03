@@ -30,6 +30,8 @@
     <link href="{{ asset('admin/css/style.min.css') }}" rel="stylesheet">
 
     <link rel="stylesheet" href="http://cdn.bootcss.com/toastr.js/latest/css/toastr.min.css">
+
+    <link rel="stylesheet" href="{{ asset('admin/css/dataTable.css') }}">
 </head>
 
 <body>
@@ -59,7 +61,38 @@
 <!--Custom JavaScript -->
 <script src="{{ asset('admin/js/custom.js') }}"></script>
 
+<script src="{{ asset('admin/js/dataTable.js') }}"></script>
+
+<script>
+    toastr.options = {
+        "closeButton": true,
+        "debug": false,
+        "newestOnTop": true,
+        "progressBar": true,
+        "positionClass": "toast-top-right",
+        "preventDuplicates": true,
+        "onclick": null,
+        "showDuration": "300",
+        "hideDuration": "1000",
+        "timeOut": "5000",
+        "extendedTimeOut": "1000",
+        "showEasing": "swing",
+        "hideEasing": "linear",
+        "showMethod": "fadeIn",
+        "hideMethod": "fadeOut"
+    }
+</script>
+
+<script>
+    $('.dropdown-toggle').click(function (){
+        $('.dropdown-menu').toggle();
+    });
+</script>
+
 {!! Toastr::message() !!}
+
+
+@stack(('scripts'));
 
 </body>
 
