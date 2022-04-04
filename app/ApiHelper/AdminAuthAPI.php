@@ -57,4 +57,71 @@ class AdminAuthAPI implements AuthInterface
 
         return Http::withHeaders($headers)->get(self::$apiEndpoint . 'products');
     }
+
+
+    public static function createProduct($data)
+    {
+        $dataToSend = self::productPostData($data);
+
+        $image = $data->file('image');
+
+        $headers = [
+            'Authorization' => 'Bearer ' . Session::get('admin.token')
+        ];
+
+        return Http::withHeaders($headers)
+            ->attach('image', file_get_contents($image), $image->getClientOriginalName())
+            ->post(self::$apiEndpoint . 'products', $dataToSend);
+    }
+
+
+    public static function updateProduct($data)
+    {
+        $dataToSend = self::productPostData($data);
+
+        $image = null;
+
+        if ( $data->hasFile('image') )
+            $image = $data->file('image');
+
+        $headers = [
+            'Authorization' => 'Bearer ' . Session::get('admin.token')
+        ];
+
+        $http = Http::withHeaders($headers);
+
+        if ( $image ){
+            $http = $http->attach('image', file_get_contents($image), $image->getClientOriginalName());
+        }
+
+        return $http->post(self::$apiEndpoint . 'products/' . $data->id, $dataToSend);
+    }
+
+    public static function deleteProduct($id)
+    {
+        $headers = [
+            'Authorization' => 'Bearer ' . Session::get('admin.token')
+        ];
+
+        return Http::withHeaders($headers)->delete(self::$apiEndpoint . 'products/' . $id);
+    }
+
+    public static function getProduct($id)
+    {
+        $headers = [
+            'Authorization' => 'Bearer ' . Session::get('admin.token')
+        ];
+
+        return Http::withHeaders($headers)->get(self::$apiEndpoint . 'products/' . $id);
+    }
+
+
+    private static function productPostData($request)
+    {
+        return [
+            'name' => $request->name,
+            'price' => $request->price,
+        ];
+    }
+
 }
