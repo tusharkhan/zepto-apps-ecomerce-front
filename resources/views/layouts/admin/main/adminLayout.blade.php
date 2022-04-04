@@ -92,7 +92,7 @@
 {!! Toastr::message() !!}
 
 
-@stack(('scripts'));
+@stack(('scripts'))
 
 </body>
 
