@@ -22,40 +22,44 @@
                 </button>
             </div>
 
-            <table id="myTable" class="table table-bordered">
-                <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>Name</th>
-                        <th>Image</th>
-                        <th>Price</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach($products as $product)
+            <div class="card col-md-12">
+                <div class="card-body">
+                    <table id="myTable" class="cell-border row-border compact stripe stripe hover">
+                        <thead>
                         <tr>
-                            <td>{{$product->id}}</td>
-                            <td>{{$product->name}}</td>
-                            <td><img src="{{$product->image}}" alt="{{$product->name}}" width="100px" height="100px"></td>
-                            <td>${{$product->price}}</td>
-                            <td>
-                                <button type="button" onclick="editProduct({{$product->id}})" class="btn btn-primary">Edit</button>
-                                <a href="{{route('admin.product.delete',$product->id)}}" class="btn btn-danger">Delete</a>
-                            </td>
+                            <th>#</th>
+                            <th>Name</th>
+                            <th>Image</th>
+                            <th>Price</th>
+                            <th>Action</th>
                         </tr>
-                    @endforeach
-                </tbody>
-                <tFoot>
-                    <tr>
-                        <th>#</th>
-                        <th>Name</th>
-                        <th>Image</th>
-                        <th>Price</th>
-                        <th>Action</th>
-                    </tr>
-                </tFoot>
-            </table>
+                        </thead>
+                        <tbody>
+                        @foreach($products as $product)
+                            <tr>
+                                <td>{{$product->id}}</td>
+                                <td>{{$product->name}}</td>
+                                <td><img src="{{$product->image}}" alt="{{$product->name}}" width="100px" height="100px"></td>
+                                <td>${{$product->price}}</td>
+                                <td>
+                                    <button type="button" onclick="editProduct({{$product->id}})" class="btn btn-primary">Edit</button>
+                                    <a href="{{route('admin.product.delete',$product->id)}}" onclick="return confirm('You sure ypu want to delete ?')" class="btn btn-danger">Delete</a>
+                                </td>
+                            </tr>
+                        @endforeach
+                        </tbody>
+                        <tFoot>
+                        <tr>
+                            <th>#</th>
+                            <th>Name</th>
+                            <th>Image</th>
+                            <th>Price</th>
+                            <th>Action</th>
+                        </tr>
+                        </tFoot>
+                    </table>
+                </div>
+            </div>
 
         </div>
 
@@ -100,7 +104,11 @@
 @push('scripts')
     <script>
         $(document).ready(function () {
-            $('#myTable').DataTable();
+            $('#myTable').DataTable({
+                "columnDefs": [
+                    {"className": "dt-center", "targets": "_all"}
+                ]
+            });
         });
     </script>
 

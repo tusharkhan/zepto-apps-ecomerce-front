@@ -77,8 +77,17 @@ class AdminController extends Controller
     }
 
 
-    public function deleteProduct()
+    public function deleteProduct($id)
     {
+        AdminAuthAPI::init();
+        $product = AdminAuthAPI::deleteProduct($id);
 
+        if ( $product->getStatusCode() == 200 ) {
+            Toastr::warning('Product deleted successfully');
+            return redirect()->back();
+        } else {
+            Toastr::error('Something went wrong');
+            return redirect()->back();
+        }
     }
 }
