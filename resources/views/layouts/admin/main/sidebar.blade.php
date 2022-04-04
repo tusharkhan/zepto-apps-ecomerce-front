@@ -23,10 +23,13 @@ if ( checkLogin('admin') ){
                 <!-- Logo icon -->
                 <b class="logo-icon">
                     <!-- Dark Logo icon -->
-                    <img src="{{ asset('admin/plugins/images/logo-icon.png') }}" alt="homepage" />
+                    <img src="{{ asset('admin/plugins/images/logo-icon.png') }}" alt="Dashboard" />
                 </b>
                 <!--End Logo icon -->
-                
+                <span class="logo-text text-dark text-center">
+                    Admin Panel
+                </span>
+
             </a>
             <!-- ============================================================== -->
             <!-- End Logo -->

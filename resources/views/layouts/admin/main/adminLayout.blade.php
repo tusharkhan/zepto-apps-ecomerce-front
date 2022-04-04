@@ -32,6 +32,7 @@
     <link rel="stylesheet" href="http://cdn.bootcss.com/toastr.js/latest/css/toastr.min.css">
 
     <link rel="stylesheet" href="{{ asset('admin/css/dataTable.css') }}">
+    <link rel="stylesheet" href="{{ asset('admin/css/data_table_sty.css') }}">
 </head>
 
 <body>
