@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\User\LoginController;
 use App\Http\Controllers\Front\HomeController;
 use Illuminate\Support\Facades\Route;
 
@@ -17,4 +18,10 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('single/{slug}', [HomeController::class, 'single'])->name('single.product');
 Route::post('searchProductByName', [HomeController::class, 'searchProductByName'])->name('search.product');
+
+
+Route::prefix('user')->group(function () {
+    Route::get('/login', [LoginController::class, 'showLoginForm'])->name('user.login.get');
+    Route::post('/login', [LoginController::class, 'login'])->name('user.login.post');
+});
 
