@@ -9,4 +9,5 @@
 return [
     'admin_endpoint' => 'http://localhost:8080/api/admin/',
     'user_endpoint' => 'http://localhost:8080/api/user/',
+    'api_endpoint' => 'http://localhost:8080/api/',
 ];

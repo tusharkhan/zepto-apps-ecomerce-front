@@ -15,15 +15,18 @@ class AdminAuthAPI implements AuthInterface
 {
 
     public static $apiEndpoint;
+    public static $adminEndpoint;
     public static $loginEndpoint;
     public static $logoutEndpoint;
 
 
     public static function init()
     {
-        self::$apiEndpoint = config('api.admin_endpoint');
-        self::$loginEndpoint = self::$apiEndpoint . 'login';
-        self::$logoutEndpoint = self::$apiEndpoint . 'logout';
+        self::$adminEndpoint = config('api.admin_endpoint');
+        self::$apiEndpoint = config('api.api_endpoint');
+
+        self::$loginEndpoint = self::$adminEndpoint . 'login';
+        self::$logoutEndpoint = self::$adminEndpoint . 'logout';
     }
 
     public static function getUser()
@@ -36,9 +39,9 @@ class AdminAuthAPI implements AuthInterface
 
     /**
      * @param $data
-     * @return array|mixed
+     * @return \Illuminate\Http\Client\Response
      */
-    public static function login($data)
+    public static function login($data): \Illuminate\Http\Client\Response
     {
         return Http::post(self::$loginEndpoint, $data);
     }
@@ -49,16 +52,19 @@ class AdminAuthAPI implements AuthInterface
     }
 
 
-    public static function getAllProducts()
+    /**
+     * @return \Illuminate\Http\Client\Response
+     */
+    public static function getAllProducts(): \Illuminate\Http\Client\Response
     {
-        $headers = [
-            'Authorization' => 'Bearer ' . Session::get('admin.token')
-        ];
-
-        return Http::withHeaders($headers)->get(self::$apiEndpoint . 'products');
+        return Http::get(self::$apiEndpoint . 'products');
     }
 
 
+    /**
+     * @param $data
+     * @return \GuzzleHttp\Promise\PromiseInterface|\Illuminate\Http\Client\Response
+     */
     public static function createProduct($data)
     {
         $dataToSend = self::productPostData($data);
@@ -71,17 +77,21 @@ class AdminAuthAPI implements AuthInterface
 
         return Http::withHeaders($headers)
             ->attach('image', file_get_contents($image), $image->getClientOriginalName())
-            ->post(self::$apiEndpoint . 'products', $dataToSend);
+            ->post(self::$adminEndpoint . 'products', $dataToSend);
     }
 
 
+    /**
+     * @param $data
+     * @return \GuzzleHttp\Promise\PromiseInterface|\Illuminate\Http\Client\Response
+     */
     public static function updateProduct($data)
     {
         $dataToSend = self::productPostData($data);
 
         $image = null;
 
-        if ( $data->hasFile('image') )
+        if ($data->hasFile('image'))
             $image = $data->file('image');
 
         $headers = [
@@ -90,29 +100,57 @@ class AdminAuthAPI implements AuthInterface
 
         $http = Http::withHeaders($headers);
 
-        if ( $image ){
+        if ($image) {
             $http = $http->attach('image', file_get_contents($image), $image->getClientOriginalName());
         }
 
-        return $http->post(self::$apiEndpoint . 'products/' . $data->id, $dataToSend);
+        return $http->post(self::$adminEndpoint . 'products/' . $data->id, $dataToSend);
     }
 
+    /**
+     * @param $id
+     * @return \GuzzleHttp\Promise\PromiseInterface|\Illuminate\Http\Client\Response
+     */
     public static function deleteProduct($id)
     {
         $headers = [
             'Authorization' => 'Bearer ' . Session::get('admin.token')
         ];
 
-        return Http::withHeaders($headers)->delete(self::$apiEndpoint . 'products/' . $id);
+        return Http::withHeaders($headers)->delete(self::$adminEndpoint . 'products/' . $id);
     }
 
+    /**
+     * @param $id
+     * @return \GuzzleHttp\Promise\PromiseInterface|\Illuminate\Http\Client\Response
+     */
     public static function getProduct($id)
     {
         $headers = [
             'Authorization' => 'Bearer ' . Session::get('admin.token')
         ];
 
-        return Http::withHeaders($headers)->get(self::$apiEndpoint . 'products/' . $id);
+        return Http::withHeaders($headers)->get(self::$adminEndpoint . 'products/' . $id);
+    }
+
+
+    /**
+     * @param $slug
+     * @return \Illuminate\Http\Client\Response
+     */
+    public static function productBySlug($slug): \Illuminate\Http\Client\Response
+    {
+        return Http::get(self::$apiEndpoint . 'products/' . $slug);
+    }
+
+
+    /**
+     * @param $data
+     * @return \Illuminate\Http\Client\Response
+     */
+    public static function searchProductByName($data): \Illuminate\Http\Client\Response
+    {
+        return Http::get(self::$apiEndpoint . 'products/search/name?query=' . $data);
     }
 
 
