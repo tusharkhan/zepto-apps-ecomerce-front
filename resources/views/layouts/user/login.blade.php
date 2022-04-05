@@ -20,7 +20,7 @@
 
 </head>
 <body
-    style="background-image: url('../admin/images/main/azzedine-rouichi-FEXF2hWSGA8-unsplash.jpg'); background-position: unset; background-size: cover;background-repeat: no-repeat;">
+    style="background-image: url('{{ asset("admin/images/main/azzedine-rouichi-FEXF2hWSGA8-unsplash.jpg") }}'); background-position: unset; background-size: cover;background-repeat: no-repeat;">
 <section class="login-form">
     <div class="container">
         <div class="row">
