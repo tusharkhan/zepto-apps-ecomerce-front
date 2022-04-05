@@ -30,7 +30,12 @@
     <div class="collapse bg-dark" id="navbarHeader">
         <div class="container">
             <div class="row">
-
+                <div class="col-sm-8 col-md-7 py-4">
+                    <ul class="list-unstyled">
+                        <li><a href="{{ route('user.login.get') }}" class="text-white">Login</a></li>
+                        <li><a href="#" class="text-white">Registration</a></li>
+                    </ul>
+                </div>
             </div>
         </div>
     </div>
