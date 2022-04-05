@@ -44,21 +44,33 @@
             <form action="">
 
                 <div class="input-group">
-                    <input type="text" class="form-control" id="productNameField" placeholder="Recipient's username"
+                    <input type="text" class="form-control" id="productNameField" placeholder="Product Name"
                            aria-label="Search product Name" aria-describedby="button-addon2">
                     <button class="btn btn-outline-secondary" type="button" id="button-addon2">Search</button>
 
                     <div class="search-result d-none" id="searchResult">
                         <ul class="list-unstyled">
-                            <li class="list-group-item">
-                                <div class="text-left">
-                                    <a class="text-danger" id="closeResult" href="#"><i class="fa fa-1x fa-times"
-                                                                                        aria-hidden="true"></i></a>
-                                </div>
-                            </li>
+                            {{--                            <li class="list-group-item">--}}
+                            {{--                                <div class="text-left">--}}
+                            {{--                                    <a class="text-danger" id="closeResult" href="#"><i class="fa fa-1x fa-times"--}}
+                            {{--                                                                                        aria-hidden="true"></i></a>--}}
+                            {{--                                </div>--}}
+                            {{--                            </li>--}}
 
                             <div id="resultList"></div>
 
+                        </ul>
+                    </div>
+
+                    <div class="search-result d-none" id="searchLoading">
+                        <ul class="list-unstyled">
+                            <li class="list-group-item">
+                                <div class="d-flex justify-content-center">
+                                    <div class="spinner-border" role="status">
+                                        <span class="visually-hidden">Loading...</span>
+                                    </div>
+                                </div>
+                            </li>
                         </ul>
                     </div>
 
@@ -90,7 +102,7 @@
 <script src="http://cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
 <script src="http://cdn.bootcss.com/toastr.js/latest/js/toastr.min.js"></script>
 <script src="{{ asset('admin/bootstrap/dist/js/bootstrap.min.js') }}"></script>
-
+<script src="{{ asset('front/js/frontCustom.js') }}"></script>
 
 <script>
     toastr.options = {
@@ -115,77 +127,65 @@
 {!! Toastr::message() !!}
 
 <script>
-    let productNameField = $('#productNameField');
-    let searchResult = $('#searchResult');
-    let closeResult = $('#closeResult');
+    var productNameField = $('#productNameField');
+    var searchResult = $('#searchResult');
+    var closeResult = $('#closeResult');
+    var searchLoading = $('#searchLoading');
+
     var typingTimer;                //timer identifier
     var doneTypingInterval = 500;
-
-
-    function writeOnSearchResult(data) {
-        let resultList = $('#resultList');
-        resultList.empty();
-
-        data.forEach((value, index) => {
-
-            let link = window.location.origin + '/single/' + value.slug;
-            let image = value.image;
-            let divToAppend = '<li class="list-group-item" style="z-index: 1">\n' +
-                '                                                <div class="d-flex">\n' +
-                '                                                    <div class="text-center col-md-4 float-left">\n' +
-                '                                                        <a href="' + link + '"><img class="img-search" src="' + image + '" alt="' + value.name + '"></a>\n' +
-                '                                                    </div>\n' +
-                '                                                    <div class="search-Text text-center col-md-8 float-left">\n' +
-                '                                                        <a class="text-dark text-decoration-none" href="' + link + '"><p>' + value.name + '</p></a>\n' +
-                '                                                    </div>\n' +
-                '                                                </div>\n' +
-                '                                            </li>';
-
-            resultList.append(divToAppend);
-
-        });
-    }
 
 
     closeResult.click(function () {
         searchResult.addClass('d-none');
     });
+
+
     $(document).on('click', function (e) {
         searchResult.addClass('d-none');
+        searchLoading.addClass('d-none');
     });
+
+
     productNameField.on('keyup', function () {
-        if (productNameField.val() == "") searchResult.addClass('d-none');
-        clearTimeout(typingTimer);
-        typingTimer = setTimeout(doneTyping, doneTypingInterval);
+        if (productNameField.val().length > 0) {
+            searchResult.addClass('d-none');
+
+            clearTimeout(typingTimer);
+            typingTimer = setTimeout(searchProduct, doneTypingInterval);
+        } else {
+            searchResult.addClass('d-none');
+        }
     });
     //on keydown, clear the countdown
     productNameField.on('keydown', function () {
         clearTimeout(typingTimer);
+        searchLoading.removeClass('d-none');
     });
 
     //user is "finished typing," do something
-    function doneTyping() {
+    function searchProduct() {
         let formData = {name: productNameField.val(), _token: '{{ csrf_token() }}'};
-        console.log(productNameField.val())
-        if (productNameField.val() != '') searchResult.removeClass('d-none');
+
+        if (productNameField.val().length > 0) searchResult.removeClass('d-none');
         else searchResult.addClass('d-none');
+
         $.ajax({
-            url: "{{ url('searchProductByName') }}", // Url of backend (can be python, php, etc..)
-            type: "POST", // data type (can be get, post, put, delete)
-            data: formData, // data in json format
-            async: false, // enable or disable async (optional, but suggested as false if you need to populate data afterwards)
+            url: "{{ url('searchProductByName') }}",
+            type: "POST",
+            data: formData,
+            async: false,
             success: function (response, textStatus, jqXHR) {
-                console.log(response, response.data.length);
-                if (response.status == true) {
-                    if (response.data.length <= 0) searchResult.addClass('d-none');
-                    else searchResult.removeClass('d-none');
+
+                if (response.status === true) {
+                    searchResult.removeClass('d-none');
                     writeOnSearchResult(response.data);
                 }
             },
             error: function (jqXHR, textStatus, errorThrown) {
-                toastr.error(jqXHR);
-                //toastr.error(textStatus);
-                toastr.error(errorThrown);
+                searchResult.addClass('d-none');
+                searchLoading.addClass('d-none');
+                toastr.error('Product not found');
             }
         });
     }
