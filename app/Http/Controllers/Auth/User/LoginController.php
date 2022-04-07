@@ -61,6 +61,59 @@ class LoginController extends Controller
     }
 
 
+    public function showRegistrationForm()
+    {
+        if (checkLogin('user'))
+            return redirect(route('home'));
+
+        return view('layouts.user.registration');
+    }
+
+
+    public function register(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required',
+            'email' => 'required|email',
+            'password' => 'required|min:6',
+            'password_confirmation' => 'required|same:password',
+        ]);
+
+        if ($validator->fails()) {
+            Session::put('errors', $validator->errors()->all());
+            return redirect()->back();
+        }
+
+        $data = array(
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => $request->password,
+            'password_confirmation' => $request->password_confirmation
+        );
+
+        $response = UserAuthAPI::registration($data);
+
+        $code = $response->getStatusCode();
+        $responseData = json_decode($response->getBody()->getContents());
+
+        if ($code == 200) {
+            Session::put('user.login', true);
+            Session::put('user.token', $responseData->data->access_token);
+            Session::put('user.user', $responseData->data->user);
+
+            Session::put('login.api.success', 'Registration Successfully');
+
+            return redirect()->route('home');
+        } else {
+            Session::put('login.api.errors', $responseData->errors->error);
+
+            Toastr::error($responseData->errors->error);
+
+            return redirect()->back();
+        }
+    }
+
+
     public function logout()
     {
         if (Session::has('user.login')) {

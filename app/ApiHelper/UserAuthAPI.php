@@ -52,4 +52,17 @@ class UserAuthAPI implements AuthInterface
     {
         // TODO: Implement logout() method.
     }
+
+
+    /**
+     * @param $data
+     * @return \Illuminate\Http\Client\Response
+     */
+    public static function registration($data): \Illuminate\Http\Client\Response
+    {
+        self::init();
+
+        $url = self::$userEndpoint . self::$registerEndpoint;
+        return Http::post($url, $data);
+    }
 }
