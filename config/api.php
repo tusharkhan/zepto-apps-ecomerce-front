@@ -7,7 +7,7 @@
 
 
 return [
-    'admin_endpoint' => 'http://localhost:8080/api/admin/',
-    'user_endpoint' => 'http://localhost:8080/api/user/',
-    'api_endpoint' => 'http://localhost:8080/api/',
+    'admin_endpoint' => env('admin_endpoint', 'http://localhost:8080/api/admin/'),
+    'user_endpoint' => env('user_endpoint', 'http://localhost:8080/api/user/'),
+    'api_endpoint' => env('API_ENDPOINT', 'http://localhost:8080/api/'),
 ];
