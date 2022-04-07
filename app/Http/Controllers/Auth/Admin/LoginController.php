@@ -28,7 +28,6 @@ class LoginController extends Controller
             'password' => $request->password
         );
 
-        AdminAuthAPI::init();
         $response = AdminAuthAPI::login($data);
 
         $code = $response->getStatusCode();
