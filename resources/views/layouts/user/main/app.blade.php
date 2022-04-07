@@ -35,12 +35,20 @@
                     <ul class="list-unstyled">
                         @if( ! checkLogin('user') )
                             <li><a href="{{ route('user.login.get') }}" class="text-white">Login</a></li>
-                            <li><a href="#" class="text-white">Registration</a></li>
+                            <li><a href="{{ route('user.register.get') }}" class="text-white">Registration</a></li>
                         @else
                             <li><a href="{{ route('user.logout') }}" class="text-white">Logout</a></li>
                         @endif
                     </ul>
                 </div>
+
+                @if( checkLogin('user') )
+                    <div class="col-sm-4 offset-md-1 py-4">
+                        <h5 class="text-white text-md-end text-sm-right">
+                            Welcome {{ \App\ApiHelper\UserAuthAPI::getUser()->name ?? "" }} </h5>
+                    </div>
+                @endif
+
             </div>
         </div>
     </div>
