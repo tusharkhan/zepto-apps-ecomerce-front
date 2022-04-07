@@ -13,6 +13,9 @@ class LoginController extends Controller
 {
     public function showLoginForm()
     {
+        if (checkLogin('user'))
+            return redirect(route('home'));
+
         return view('layouts.user.login');
     }
 
@@ -45,7 +48,7 @@ class LoginController extends Controller
             Session::put('user.token', $responseData->data->access_token);
             Session::put('user.user', $responseData->data->user);
 
-            Toastr::success('Login Successfully');
+            Session::put('login.api.success', 'Login Successfully');
 
             return redirect()->route('home');
         } else {
@@ -55,5 +58,19 @@ class LoginController extends Controller
 
             return redirect()->back();
         }
+    }
+
+
+    public function logout()
+    {
+        if (Session::has('user.login')) {
+            Session::forget('user.login');
+            Session::forget('user.token');
+            Session::forget('user.user');
+
+            Session::put('login.api.success', 'Logout Successfully');
+        }
+
+        return redirect()->route('home');
     }
 }

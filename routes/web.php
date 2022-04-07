@@ -22,5 +22,6 @@ Route::post('searchProductByName', [HomeController::class, 'searchProductByName'
 
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('user.login.get');
 Route::post('/login', [LoginController::class, 'login'])->name('user.login.post');
+Route::get('/logout', [LoginController::class, 'logout'])->name('user.logout');
 
 
