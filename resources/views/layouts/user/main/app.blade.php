@@ -20,6 +20,7 @@
     <!-- Bootstrap core CSS -->
     <link href="{{ asset('admin/bootstrap/dist/css/bootstrap.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('admin/css/front.css') }}">
+    <link rel="stylesheet" href="http://cdn.bootcss.com/toastr.js/latest/css/toastr.min.css">
 
     @stack('style')
 
@@ -32,8 +33,12 @@
             <div class="row">
                 <div class="col-sm-8 col-md-7 py-4">
                     <ul class="list-unstyled">
-                        <li><a href="{{ route('user.login.get') }}" class="text-white">Login</a></li>
-                        <li><a href="#" class="text-white">Registration</a></li>
+                        @if( ! checkLogin('user') )
+                            <li><a href="{{ route('user.login.get') }}" class="text-white">Login</a></li>
+                            <li><a href="#" class="text-white">Registration</a></li>
+                        @else
+                            <li><a href="{{ route('user.logout') }}" class="text-white">Logout</a></li>
+                        @endif
                     </ul>
                 </div>
             </div>
@@ -127,9 +132,12 @@
         "showMethod": "fadeIn",
         "hideMethod": "fadeOut"
     }
+    @if( \Illuminate\Support\Facades\Session::has('login.api.success') )
+    toastr.success("{{ \Illuminate\Support\Facades\Session::get('login.api.success') }}");
+    @php \Illuminate\Support\Facades\Session::forget('login.api.success') @endphp
+    @endif
 </script>
 
-{!! Toastr::message() !!}
 
 <script>
     var productNameField = $('#productNameField');

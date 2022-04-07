@@ -20,8 +20,8 @@ Route::get('single/{slug}', [HomeController::class, 'single'])->name('single.pro
 Route::post('searchProductByName', [HomeController::class, 'searchProductByName'])->name('search.product');
 
 
-Route::prefix('user')->group(function () {
-    Route::get('/login', [LoginController::class, 'showLoginForm'])->name('user.login.get');
-    Route::post('/login', [LoginController::class, 'login'])->name('user.login.post');
-});
+Route::get('/login', [LoginController::class, 'showLoginForm'])->name('user.login.get');
+Route::post('/login', [LoginController::class, 'login'])->name('user.login.post');
+Route::get('/logout', [LoginController::class, 'logout'])->name('user.logout');
+
 

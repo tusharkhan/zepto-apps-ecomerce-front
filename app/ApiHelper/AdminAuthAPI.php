@@ -43,6 +43,7 @@ class AdminAuthAPI implements AuthInterface
      */
     public static function login($data): \Illuminate\Http\Client\Response
     {
+        self::init();
         return Http::post(self::$loginEndpoint, $data);
     }
 
@@ -57,6 +58,7 @@ class AdminAuthAPI implements AuthInterface
      */
     public static function getAllProducts(): \Illuminate\Http\Client\Response
     {
+        self::init();
         return Http::get(self::$apiEndpoint . 'products');
     }
 
@@ -67,6 +69,8 @@ class AdminAuthAPI implements AuthInterface
      */
     public static function createProduct($data)
     {
+        self::init();
+
         $dataToSend = self::productPostData($data);
 
         $image = $data->file('image');
@@ -87,6 +91,8 @@ class AdminAuthAPI implements AuthInterface
      */
     public static function updateProduct($data)
     {
+        self::init();
+
         $dataToSend = self::productPostData($data);
 
         $image = null;
@@ -113,6 +119,8 @@ class AdminAuthAPI implements AuthInterface
      */
     public static function deleteProduct($id)
     {
+        self::init();
+
         $headers = [
             'Authorization' => 'Bearer ' . Session::get('admin.token')
         ];
@@ -126,6 +134,8 @@ class AdminAuthAPI implements AuthInterface
      */
     public static function getProduct($id)
     {
+        self::init();
+
         $headers = [
             'Authorization' => 'Bearer ' . Session::get('admin.token')
         ];
@@ -140,6 +150,7 @@ class AdminAuthAPI implements AuthInterface
      */
     public static function productBySlug($slug): \Illuminate\Http\Client\Response
     {
+        self::init();
         return Http::get(self::$apiEndpoint . 'products/' . $slug);
     }
 
@@ -150,6 +161,7 @@ class AdminAuthAPI implements AuthInterface
      */
     public static function searchProductByName($data): \Illuminate\Http\Client\Response
     {
+        self::init();
         return Http::get(self::$apiEndpoint . 'products/search/name?query=' . $data);
     }
 
